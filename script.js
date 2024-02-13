@@ -103,18 +103,18 @@ function setGenre() {
         t.addEventListener('click', () => {
             if(selectedGenre.length == 0){
                 selectedGenre.push(genre.id);
-            }else{
+            } else {
                 if(selectedGenre.includes(genre.id)){
                     selectedGenre.forEach((id, idx) => {
                         if(id == genre.id){
                             selectedGenre.splice(idx, 1);
                         }
                     })
-                }else{
+                } else {
                     selectedGenre.push(genre.id);
                 }
             }
-            console.log(selectedGenre)
+            // console.log(selectedGenre)
             getMovies(API_URL + '&with_genres='+encodeURI(selectedGenre.join(',')))
             highlightSelection()
         })
@@ -134,14 +134,13 @@ function highlightSelection() {
             hightlightedTag.classList.add('highlight');
         })
     }
-
 }
 
 function clearBtn(){
     let clearBtn = document.getElementById('clear');
     if(clearBtn){
         clearBtn.classList.add('highlight')
-    }else{
+    } else {
             
         let clear = document.createElement('div');
         clear.classList.add('tag','highlight');
@@ -153,8 +152,7 @@ function clearBtn(){
             getMovies(API_URL);
         })
         tagsEl.append(clear);
-    }
-    
+    } 
 }
 
 getMovies(API_URL);
@@ -176,7 +174,7 @@ function showMovies(data) {
     main.innerHTML = '';
 
     data.forEach(movie => {
-        const {title, poster_path, vote_average, overview} = movie;
+        const {title, poster_path, vote_average, overview, release_date} = movie;
         const movieEl = document.createElement('div');
         movieEl.classList.add('movie');
         movieEl.innerHTML = `
@@ -186,15 +184,16 @@ function showMovies(data) {
                 <h3>${title}</h3>
                 <span class="${getColor(vote_average)}">${vote_average}</span>
             </div>
-
+            <div>
+            
+            </div>
             <div class="overview">
-
+                <h3>Release Date: ${release_date}</h3>
                 <h3>Overview</h3>
-                ${overview}
+                ${overview}                
             </div>
         `
         main.appendChild(movieEl);
-
     })
 }
 
@@ -202,9 +201,9 @@ function showMovies(data) {
 function getColor(vote_average) {
     if(vote_average >= 8){
         return 'green'
-    }else if(vote_average >= 5){
+    } else if(vote_average >= 5){
         return "orange"
-    }else{
+    } else {
         return 'red'
     }
 }
@@ -215,8 +214,7 @@ form.addEventListener('submit', (e) => {
     const searchTerm = search.value;
     if(searchTerm) {
         getMovies(searchURL+ '&query=' + searchTerm);
-    }
-    else {
+    } else {
         getMovies(API_URL);
     }
 }) 
